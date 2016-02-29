@@ -1,0 +1,33 @@
+# -*- coding: utf-8 -*-
+
+#Código de factorización QR
+#Creado por Antonio Lamas Villar
+
+import numpy as np
+from numpy import linalg as alg
+import matplotlib.pyplot as plt
+
+
+#Función factorización QR
+def fact_qr(a):
+    [m,n]=np.shape(a)
+    mc=np.zeros([m,n])
+    mc[:,0]=a[:,0]/alg.norm(a[:,0])    
+    mr=np.zeros([n,n])
+    mr[0,0]=alg.norm(a[:,0])
+        
+    for i in range(1,n):
+        q=mc[:,0:i]
+        q=np.eye(m)-(mc.dot(mc.T))
+        mc[:,i]=q.dot(a[:,i])
+        mr[i,i]=alg.norm(mc[:,i])
+        mc[:,i]=mc[:,i]/mr[i,i]
+        for j in range(0,i):
+            mr[j,i]=mc[:,j].T.dot(a[:,i])
+    return(mc,mr)
+  
+  
+a_matriz=np.array([[7,5,96],[2,3,4],[3,4,5]])
+(mc,mr)=fact_qr(a_matriz)
+print(mc.dot(mr))
+
